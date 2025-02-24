@@ -2,12 +2,12 @@
 
 import { signIn } from "@/auth";
 import { getUserByEmail } from "@/data/user";
-import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { loginSchema } from "@/schemas";
 import { AuthError } from "next-auth";
 import { z } from "zod";
+import { sendEmail } from "./sendMail";
 
 export const login = async (values: z.infer<typeof loginSchema>) => {
   const validatedField = loginSchema.safeParse(values);
@@ -29,7 +29,7 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
       existingUser.email,
     );
 
-    await sendVerificationEmail(
+    await sendEmail(
       verificationToken.email,
       verificationToken.token,
       verificationToken.expires,
