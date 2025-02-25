@@ -12,7 +12,9 @@ export async function sendEmail(email: string, token: string, date: Date) {
     },
   });
 
-  const confirmLink = `http://localhost:3000/auth/new-verification?token=${token}`;
+  const domain = process.env.NEXT_PUBLIC_APP_URL;
+
+  const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
   try {
     await transporter.sendMail({
