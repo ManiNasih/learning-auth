@@ -1,8 +1,12 @@
 import { ResetForm } from "@/components/auth/reset-form";
-import React from "react";
+import React, { Suspense } from "react";
 
 const ResetPage = () => {
-  return <ResetForm />;
+  return (
+    <Suspense>
+      <ResetForm />
+    </Suspense>
+  );
 };
 
 export default ResetPage;
