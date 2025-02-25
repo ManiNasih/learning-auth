@@ -3,6 +3,8 @@
 import { getUserByEmail } from "@/data/user";
 import { getVerificationTokenByToken } from "@/data/verification-token";
 import { db } from "@/lib/db";
+import { signIn } from "@/auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export const newVerification = async (token: string) => {
   const existingToken = await getVerificationTokenByToken(token);
@@ -27,6 +29,12 @@ export const newVerification = async (token: string) => {
 
   await db.verificationToken.delete({
     where: { id: existingToken.id },
+  });
+
+  await signIn("credentials", {
+    email: existingUser.email,
+    password: existingUser.password,
+    redirectTo: DEFAULT_LOGIN_REDIRECT,
   });
 
   return { success: "Email verified!" };

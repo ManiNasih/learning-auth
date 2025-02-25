@@ -26,7 +26,13 @@ const NewVerificationForm = () => {
         setSuccess(data.success);
         setError(data.error);
       })
-      .catch(() => {
+      .catch((error) => {
+        if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) {
+          // Ignore error, as the redirect happens automatically
+          return;
+        }
+
+        // Handle genuine errors
         setError("Something went wrong!");
       });
   }, [token]);
